@@ -1,0 +1,24 @@
+machine:
+  services:
+    - docker
+  environment:
+    RAILS_ENV: test
+dependencies:
+  override:
+    - docker info
+    - |
+      cat << VARS > .env
+      SECRET_KEY_TEST=$SECRET_KEY_TEST
+      POSTGRES_DB=$POSTGRES_DB
+      POSTGRES_USER=$POSTGRES_USER
+      VARS
+    - docker-compose build
+database:
+  pre:
+    - docker-compose up -d
+    - sleep 1
+  override:
+    - docker-compose run app rake db:create
+test:
+  override:
+    - echo 'OK'

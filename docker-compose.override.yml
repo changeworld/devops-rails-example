@@ -1,0 +1,6 @@
+app:
+  volumes:
+    - .:/var/www/devops-rails-example
+web:
+  volumes_from:
+    - app

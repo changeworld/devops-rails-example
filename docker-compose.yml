@@ -1,0 +1,20 @@
+db:
+  image: postgres:9.4.5
+  volumes:
+    - devops-rails-example-postgres:/var/lib/postgresql/data
+app:
+  build: .
+  env_file: .env
+  environment:
+    RAILS_ENV: $RAILS_ENV
+  links:
+    - db
+  expose:
+    - "3000"
+web:
+  build: .
+  dockerfile: config/containers/Dockerfile-nginx
+  links:
+    - app
+  ports:
+    - "80:80"
